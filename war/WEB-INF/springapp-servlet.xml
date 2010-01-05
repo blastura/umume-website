@@ -38,8 +38,29 @@
         <property name="basename" value="messages"/>
     </bean>
 
-    <bean name="/user.htm" class="se.umu.cs.umume.website.main.UserController">
+    <bean name="/person.htm" class="se.umu.cs.umume.website.main.PersonController">
+        <property name="currentPerson" ref="currentPerson"/>
+    </bean>
     
+    
+    <bean id="currentPerson" class="se.umu.cs.umume.website.main.PersonBean" />
+    
+    <bean name="/findperson.htm" class="se.umu.cs.umume.website.main.FindPersonFormController">
+        <property name="sessionForm" value="true"/>
+        <property name="commandName" value="findPerson"/>
+        <property name="commandClass" value="se.umu.cs.umume.website.main.FindPerson"/>
+        <property name="formView" value="findperson"/>
+        <property name="successView" value="person.htm"/>
+        <property name="currentPerson" ref="currentPerson"/>
+    </bean>
+    
+    <bean name="/update-person.htm" class="se.umu.cs.umume.website.main.UpdatePersonFormController">
+        <property name="sessionForm" value="true"/>
+        <property name="commandName" value="updatePerson"/>
+        <property name="commandClass" value="se.umu.cs.umume.website.main.UpdatePerson"/>
+        <property name="formView" value="update-person"/>
+        <property name="successView" value="person.htm"/>
+        <property name="currentPerson" ref="currentPerson"/>
     </bean>
     
     <bean name="/hello.htm" class="se.umu.cs.umume.website.lek.InventoryController">
