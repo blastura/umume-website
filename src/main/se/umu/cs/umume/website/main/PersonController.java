@@ -24,18 +24,20 @@ public class PersonController implements Controller {
     
     public ModelAndView handleRequest(HttpServletRequest arg0,
             HttpServletResponse arg1) throws Exception {
-        
+       
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("name", currentPerson.getGivenName());
-
-        return new ModelAndView("user", "user", model);
+        model.put("name", this.currentPerson.getGivenName());
+        model.put("tweets", this.currentPerson.getTweets());
+        model.put("description", this.currentPerson.getDescription());
+       
+        return new ModelAndView("person", "person", model);
     }
 
     public void setCurrentPerson(PersonBean currentPerson) {
         this.currentPerson = currentPerson;
     }
 
-    public PersonBean getCurrentPerson() {
+    public PersonBean getCurrentPerson() {  
         return currentPerson;
     }
 }

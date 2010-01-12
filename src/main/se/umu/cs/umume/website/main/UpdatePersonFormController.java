@@ -16,8 +16,6 @@ import javax.xml.bind.Unmarshaller;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import se.umu.cs.umume.website.lek.ProductManager;
-
 public class UpdatePersonFormController extends SimpleFormController {
 
     /** Logger for this class and subclasses */
@@ -27,23 +25,14 @@ public class UpdatePersonFormController extends SimpleFormController {
 
     public ModelAndView onSubmit(Object command) throws ServletException {
 
-        String userName = ((FindPerson) command).getUserName();
-
-        JAXBContext jc;
+        String description = ((UpdatePerson) command).getDescription();
+        String twitter = ((UpdatePerson) command).getTwitter();
+        String password = ((UpdatePerson) command).getPassword();
+        
         try {
-            jc = JAXBContext.newInstance(PersonBean.class);
-
-            Unmarshaller u = jc.createUnmarshaller();
             URL url = new URL(
-                    "http://mega.cs.umu.se:8080/UmuMeREST/users/"+userName);
-            PersonBean o = (PersonBean) u.unmarshal(url);
-            currentPerson.setGivenName(o.getGivenName());
-            
-        } catch (JAXBException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+                    "http://localhost:8080/UmuMeREST/users/"+currentPerson.getInstitution());
         } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -52,8 +41,8 @@ public class UpdatePersonFormController extends SimpleFormController {
 
     protected Object formBackingObject(HttpServletRequest request)
             throws ServletException {
-        FindPerson findUser = new FindPerson();
-        return findUser;
+        UpdatePerson updatePerson = new UpdatePerson();
+        return updatePerson;
     }
 
     public void setCurrentPerson(PersonBean currentPerson) {

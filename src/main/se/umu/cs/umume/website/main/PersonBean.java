@@ -15,12 +15,15 @@ public class PersonBean {
     private String givenName;
     private String familyName;
     private List<String> emails;
+    private List<String> tweets;
     private String floor;
     private String street;
     private String postalCode;
     private String institution;
     private String roomNumber;
     private String phoneNumber;
+    private String twitterName;
+    private String description;
 
     @XmlAttribute(name="self")
     public URI getResourceRef() {
@@ -51,6 +54,8 @@ public class PersonBean {
     public void setEmails(List<String> emails) {
         this.emails = emails;
     }
+    
+    
     public String getFloor() {
         return floor;
     }
@@ -86,5 +91,27 @@ public class PersonBean {
     }
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+    
+
+    @XmlElementWrapper(name="tweets")
+    @XmlElements({@XmlElement(name="tweet")})
+    public List<String> getTweets() {
+        return tweets;
+    }
+    public void setTweets(List<String> tweets) {
+        this.tweets = tweets;
+    }
+    public void setTwitterName(String twitterName) {
+        this.twitterName = twitterName;
+    }
+    public String getTwitterName() {
+        return twitterName;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public String getDescription() {
+        return description;
     }
 }

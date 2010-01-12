@@ -35,9 +35,10 @@ public class FindPersonFormController extends SimpleFormController {
 
             Unmarshaller u = jc.createUnmarshaller();
             URL url = new URL(
-                    "http://mega.cs.umu.se:8080/UmuMeREST/users/"+userName);
+                    "http://localhost:8080/UmuMeREST/users/"+userName);
             PersonBean o = (PersonBean) u.unmarshal(url);
             currentPerson.setGivenName(o.getGivenName());
+            currentPerson.setTweets(o.getTweets());
             
         } catch (JAXBException e) {
             // TODO Auto-generated catch block
