@@ -54,11 +54,11 @@
         <property name="currentPerson" ref="currentPerson"/>
     </bean>
     
-    <bean name="/update-person.htm" class="se.umu.cs.umume.website.main.UpdatePersonFormController">
+    <bean name="/updateperson.htm" class="se.umu.cs.umume.website.main.UpdatePersonFormController">
         <property name="sessionForm" value="true"/>
         <property name="commandName" value="updatePerson"/>
         <property name="commandClass" value="se.umu.cs.umume.website.main.UpdatePerson"/>
-        <property name="formView" value="update-person"/>
+        <property name="formView" value="updateperson"/>
         <property name="successView" value="person.htm"/>
         <property name="currentPerson" ref="currentPerson"/>
     </bean>
