@@ -19,7 +19,6 @@ import org.springframework.web.servlet.mvc.Controller;
 public class PersonController implements Controller {
 
     protected final Log logger = LogFactory.getLog(getClass());
-    private PersonBean currentPerson;
     
     public ModelAndView handleRequest(HttpServletRequest request,
             HttpServletResponse arg1) throws Exception {
@@ -48,11 +47,4 @@ public class PersonController implements Controller {
         return new ModelAndView("person", "person", model);
     }
 
-    public void setCurrentPerson(PersonBean currentPerson) {
-        this.currentPerson = currentPerson;
-    }
-
-    public PersonBean getCurrentPerson() {  
-        return currentPerson;
-    }
 }

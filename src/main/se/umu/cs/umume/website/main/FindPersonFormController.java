@@ -23,8 +23,6 @@ public class FindPersonFormController extends SimpleFormController {
     /** Logger for this class and subclasses */
     protected final Log logger = LogFactory.getLog(getClass());
 
-    private PersonBean currentPerson;
-
     public ModelAndView onSubmit(Object command) throws ServletException {
 
         String userName = ((FindPerson) command).getUserName();
@@ -36,14 +34,6 @@ public class FindPersonFormController extends SimpleFormController {
             throws ServletException {
         FindPerson findUser = new FindPerson();
         return findUser;
-    }
-
-    public void setCurrentPerson(PersonBean currentPerson) {
-        this.currentPerson = currentPerson;
-    }
-
-    public PersonBean getCurrentPerson() {
-        return currentPerson;
     }
 
 }

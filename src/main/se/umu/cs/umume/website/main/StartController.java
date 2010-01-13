@@ -11,7 +11,6 @@ import org.springframework.web.servlet.mvc.Controller;
 public class StartController implements Controller {
 
     protected final Log logger = LogFactory.getLog(getClass());
-    private PersonBean currentPerson;
     
     public ModelAndView handleRequest(HttpServletRequest request,
             HttpServletResponse arg1) throws Exception {
@@ -19,11 +18,4 @@ public class StartController implements Controller {
         return new ModelAndView("start");
     }
 
-    public void setCurrentPerson(PersonBean currentPerson) {
-        this.currentPerson = currentPerson;
-    }
-
-    public PersonBean getCurrentPerson() {  
-        return currentPerson;
-    }
 }
