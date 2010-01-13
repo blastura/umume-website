@@ -21,7 +21,7 @@ var oB = {
             var boundaries = new GLatLngBounds(
                 new GLatLng(63.82012764313529, 20.30680791466784),
                 new GLatLng(63.82070236978285, 20.30879572927132));
-            var oldmap = new GGroundOverlay("mit4.png", boundaries);
+            var oldmap = new GGroundOverlay("images/mit4.png", boundaries);
             map.setUIToDefault();
             map.addOverlay(oldmap);
             var myLayer = new GLayer("com.panoramio.all");

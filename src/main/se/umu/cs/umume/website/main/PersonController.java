@@ -38,13 +38,13 @@ public class PersonController implements Controller {
             e.printStackTrace();
         }
         
-        Map<String, Object> model = new HashMap<String, Object>();
-        model.put("name", person.getGivenName());
-        model.put("tweets", person.getTweets());
-        model.put("description", person.getDescription());
-        model.put("username", userName);
+        //        Map<String, Object> model = new HashMap<String, Object>();
+        //        model.put("name", person.getGivenName());
+        //        model.put("tweets", person.getTweets());
+        //        model.put("description", person.getDescription());
+        //        model.put("username", userName);
        
-        return new ModelAndView("person", "person", model);
+        return new ModelAndView("person", "person", person);
     }
 
 }

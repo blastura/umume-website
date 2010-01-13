@@ -11,5 +11,9 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jersey-core-1.1.4.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jsr311-api-1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jersey-client-1.1.4.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-webmvc.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/spring.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/standard.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
