@@ -5,7 +5,17 @@
 body {
     font-family: helvetica neue, arial, sans-serif;
     font-size:14px;
-    background:url(../images/body.gif) repeat-x #edeae2;}
+    background:url(../images/body.gif) repeat-x #edeae2;
+    color:#333;}
+
+h1,h2,h3,h4,h5 {
+	color:#000;}
+h3 {
+    margin-botto:10px;}
+
+li {
+	list-style-type:none;}
+
 #wrap {
     width:880px;
     margin:0 auto;
@@ -37,3 +47,7 @@ body {
     color:#c6b6b6;}
 #bottom a {
     color:#988b8b;}
+    
+#tweets li {
+    font-size:12px;
+    margin-bottom:7px;}

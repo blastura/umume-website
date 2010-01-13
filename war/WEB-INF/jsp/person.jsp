@@ -16,18 +16,18 @@
             <li><a href="mailto:<c:out value="${mail}"/>"><c:out value="${mail}"/></a></li>
          </c:forEach>
       </ul>
-
+        <br />
       <c:if test="${not empty person.tweets}">
-         <div id="tweets">
-         <h3><c:out value="${person.twitterName}"/></h3>
+         <ul id="tweets">
+         <h3><c:out value="${person.twitterName}"/>s Twitterfeed</h3>
          <c:forEach items="${person.tweets}" var="tweet">
-            <p><c:out value="${tweet}"/></p>
+            <li><p><c:out value="${tweet}"/></p></li>
          </c:forEach>
-         </div>
+         </ul>
       </c:if>
 
       <p>
-         <a href="<c:out value="https://cas.umu.se/login?service=http://localhost:8080/springapp/updateperson.htm?username=${person.uid}"/>">Uppdatera person</a>
+         <a href="<c:out value="https://cas.umu.se/login?service=http://localhost:8080/umume/updateperson.htm?username=${person.uid}"/>">Uppdatera person</a>
       </p>
 
    </div>
