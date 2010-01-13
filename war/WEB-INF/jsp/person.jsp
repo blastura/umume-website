@@ -13,7 +13,7 @@
     <br>
     <a href="<c:url value="findperson.htm"/>">Find new user</a>
     <br />
-    <a href="<c:url value="updateperson.htm"/>">Update person</a>
+    <a href="<c:url value="https://cas.umu.se/login?service=http://localhost:8080/springapp/updateperson.htm?username=${person.username}"/>">Update person</a>
     <br>
     <div id="map_canvas" style="width: 300px; height: 300px; float:right;"></div>
     

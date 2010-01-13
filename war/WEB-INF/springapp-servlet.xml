@@ -42,7 +42,6 @@
         <property name="currentPerson" ref="currentPerson"/>
     </bean>
     
-    
     <bean id="currentPerson" class="se.umu.cs.umume.website.main.PersonBean" />
     
     <bean name="/findperson.htm" class="se.umu.cs.umume.website.main.FindPersonFormController">
@@ -50,7 +49,7 @@
         <property name="commandName" value="findPerson"/>
         <property name="commandClass" value="se.umu.cs.umume.website.main.FindPerson"/>
         <property name="formView" value="findperson"/>
-        <property name="successView" value="person.htm"/>
+        <property name="successView" value="redirect:person.htm"/>
         <property name="currentPerson" ref="currentPerson"/>
     </bean>
     
@@ -59,9 +58,10 @@
         <property name="commandName" value="updatePerson"/>
         <property name="commandClass" value="se.umu.cs.umume.website.main.UpdatePerson"/>
         <property name="formView" value="updateperson"/>
-        <property name="successView" value="person.htm"/>
-        <property name="currentPerson" ref="currentPerson"/>
+        <property name="successView" value="person"/>
     </bean>
+    
+    <bean name="/start.htm" class="se.umu.cs.umume.website.main.StartController" />
     
     <bean name="/hello.htm" class="se.umu.cs.umume.website.lek.InventoryController">
         <property name="productManager" ref="productManager"/>

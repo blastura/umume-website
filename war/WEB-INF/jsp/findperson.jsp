@@ -15,7 +15,7 @@
     <tr>
       <td align="right" width="20%">Increase (%):</td>
         <td width="20%">
-          <form:input path="userName"/>
+          <form:input path="userName" />
         </td>
     </tr>
   </table>
