@@ -4,7 +4,8 @@ public class UpdatePerson {
 
     private String description;
     private String twitter;
-    private String password;
+    private String ticket;
+    private String userName;
     
     public String getDescription() {
         return description;
@@ -18,11 +19,16 @@ public class UpdatePerson {
     public void setTwitter(String twitter) {
         this.twitter = twitter;
     }
-    public String getPassword() {
-        return password;
+    public void setTicket(String ticket) {
+        this.ticket = ticket;
     }
-    public void setPassword(String password) {
-        this.password = password;
+    public String getTicket() {
+        return ticket;
     }
-    
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    public String getUserName() {
+        return userName;
+    }
 }

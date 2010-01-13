@@ -29,26 +29,7 @@ public class FindPersonFormController extends SimpleFormController {
 
         String userName = ((FindPerson) command).getUserName();
 
-        JAXBContext jc;
-        try {
-            jc = JAXBContext.newInstance(PersonBean.class);
-
-            Unmarshaller u = jc.createUnmarshaller();
-            URL url = new URL(
-                    "http://localhost:8080/UmuMeREST/users/"+userName);
-            PersonBean o = (PersonBean) u.unmarshal(url);
-            currentPerson.setGivenName(o.getGivenName());
-            currentPerson.setTweets(o.getTweets());
-            
-        } catch (JAXBException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        return new ModelAndView(new RedirectView(getSuccessView()));
+        return new ModelAndView(getSuccessView(), "username", userName);
     }
 
     protected Object formBackingObject(HttpServletRequest request)

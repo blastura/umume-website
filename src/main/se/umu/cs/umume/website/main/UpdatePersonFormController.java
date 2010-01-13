@@ -1,14 +1,30 @@
 package se.umu.cs.umume.website.main;
 
+import java.io.FileInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -16,41 +32,95 @@ import javax.xml.bind.Unmarshaller;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.client.urlconnection.HTTPSProperties;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class UpdatePersonFormController extends SimpleFormController {
 
     /** Logger for this class and subclasses */
-    protected final Log logger = LogFactory.getLog(getClass());
-
-    private PersonBean currentPerson;
+    //protected final Log logger = LogFactory.getLog(getClass());
+    private static final Logger logger = LoggerFactory.getLogger(UpdatePersonFormController.class);
 
     public ModelAndView onSubmit(Object command) throws ServletException {
 
-        String description = ((UpdatePerson) command).getDescription();
-        String twitter = ((UpdatePerson) command).getTwitter();
-        String password = ((UpdatePerson) command).getPassword();
-        
+        /*
+        // Create a trust manager that does not validate certificate chains
+        TrustManager[] trustAllCerts = new TrustManager[]{
+            new X509TrustManager() {
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                    return null;
+                }
+                public void checkClientTrusted( java.security.cert.X509Certificate[] certs, String authType ) {
+                }
+                public void checkServerTrusted( java.security.cert.X509Certificate[] certs, String authType ) {
+                }
+            }
+        };
+        // Install the all-trusting trust manager
+        SSLContext sc = null;
         try {
+            sc = SSLContext.getInstance( "SSL" );
+            sc.init( null, trustAllCerts, new java.security.SecureRandom() );
+            HttpsURLConnection.setDefaultSSLSocketFactory( sc.getSocketFactory() );
+        }
+        catch ( Exception e ) {
+            //We can not recover from this exception.
+            e.printStackTrace();
+        }
+        */
+        /*
+        ClientConfig config = new DefaultClientConfig();
+        config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(null, sc));
+        Client client = Client.create(config);
+        */
+        
+        PersonBean person = new PersonBean();
+        String userName = ((UpdatePerson) command).getUserName();
+        String ticket = ((UpdatePerson) command).getTicket();
+        person.setTwitterName(((UpdatePerson) command).getTwitter());
+        person.setDescription(((UpdatePerson) command).getDescription());
+        
+        Client client = Client.create();
+        WebResource webResource = client.resource("http://mega.cs.umu.se:8080/UmuMeREST/users/"+userName+"?ticket="+ticket);
+        ClientResponse response = webResource.type("application/xml").put(ClientResponse.class, person);
+        logger.error(response.toString());
+        
+        return new ModelAndView(getSuccessView(), "username", userName);
+    }
+
+    protected Object formBackingObject(HttpServletRequest request)
+    throws ServletException {
+        UpdatePerson updatePerson = new UpdatePerson();
+
+        String userName = request.getParameter("username");
+
+        JAXBContext jc;
+        PersonBean person = null;
+        try {
+            jc = JAXBContext.newInstance(PersonBean.class);
+
+            Unmarshaller u = jc.createUnmarshaller();
             URL url = new URL(
-                    "http://localhost:8080/UmuMeREST/users/"+currentPerson.getInstitution());
+                    "http://localhost:8080/UmuMeREST/users/"+userName);
+            person = (PersonBean) u.unmarshal(url);
+        } catch (JAXBException e) {
+            e.printStackTrace();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
 
-        return new ModelAndView(new RedirectView(getSuccessView()));
-    }
+        updatePerson.setDescription(person.getDescription());
+        updatePerson.setTwitter(person.getTwitterName());
+        updatePerson.setTicket(request.getParameter("ticket"));
+        updatePerson.setUserName(request.getParameter("username"));
 
-    protected Object formBackingObject(HttpServletRequest request)
-            throws ServletException {
-        UpdatePerson updatePerson = new UpdatePerson();
         return updatePerson;
     }
-
-    public void setCurrentPerson(PersonBean currentPerson) {
-        this.currentPerson = currentPerson;
-    }
-
-    public PersonBean getCurrentPerson() {
-        return currentPerson;
-    }
-
 }
