@@ -1,11 +1,5 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
 
-<html>
-    <head>
-        <title>asda</title>
-        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAgjvqnjJXMXDQHpN0ipkEUxQ5Xso4OvBTYOdbhMOxX_XafeJl_xSnGXaw18qDYgpRHk7b37JuQfNoXA" type="text/javascript"></script>
-    </head>
-  <body>
     <h3>Products</h3>
     <c:out value="${person.name}"/><br />
     <br />

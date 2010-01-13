@@ -1,3 +1,12 @@
 <%@ page session="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<html>
+    <head>
+        <title>asda</title>
+        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAgjvqnjJXMXDQHpN0ipkEUxQ5Xso4OvBTYOdbhMOxX_XafeJl_xSnGXaw18qDYgpRHk7b37JuQfNoXA" type="text/javascript"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+    </head>
+  <body>
