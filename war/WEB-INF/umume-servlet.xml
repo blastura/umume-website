@@ -9,8 +9,10 @@
 		the application context definition for the springapp DispatcherServlet
 	-->
 
-    <bean name="/person.htm" class="se.umu.cs.umume.website.main.PersonController" />
-       
+
+
+    <bean name="/person.htm" class="se.umu.cs.umume.website.main.PersonController" />    
+    
     <bean name="/findperson.htm" class="se.umu.cs.umume.website.main.FindPersonFormController">
         <property name="sessionForm" value="true"/>
         <property name="commandName" value="findPerson"/>
