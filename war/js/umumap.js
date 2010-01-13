@@ -1,0 +1,54 @@
+var oB = {
+    addEvent: function(elm, evType, fn, useCapture) {
+        // cross-browser event handling for IE5+, NS6 and Mozilla
+        // By Scott Andrew
+        if (elm.addEventListener) {
+            elm.addEventListener(evType, fn, useCapture);
+            return true;
+        } else if (elm.attachEvent) {
+            var r = elm.attachEvent('on' + evType, fn);
+            return r;
+        } else {
+            elm['on' + evType] = fn;
+        }
+    },
+
+    init: function() {
+        if (GBrowserIsCompatible()) {
+            var map = new GMap2(document.getElementById("map-canvas"));
+            map.setCenter(new GLatLng(63.82045852982942, 20.307787656784058), 19);
+
+            var boundaries = new GLatLngBounds(
+                new GLatLng(63.82012764313529, 20.30680791466784),
+                new GLatLng(63.82070236978285, 20.30879572927132));
+            var oldmap = new GGroundOverlay("mit4.png", boundaries);
+            map.setUIToDefault();
+            map.addOverlay(oldmap);
+            var myLayer = new GLayer("com.panoramio.all");
+            map.addOverlay(myLayer);
+
+
+            GEvent.addListener(map,"click", function(overlay,latlng) {
+                if (overlay) {
+                    // ignore if we click on the info window
+                    return;
+                }
+                var tileCoordinate = new GPoint();
+                var tilePoint = new GPoint();
+                var currentProjection = G_NORMAL_MAP.getProjection();
+                tilePoint = currentProjection.fromLatLngToPixel(latlng, map.getZoom());
+                tileCoordinate.x = Math.floor(tilePoint.x / 256);
+                tileCoordinate.y = Math.floor(tilePoint.y / 256);
+                var myHtml = "Latitude: " + latlng.lat() + "<br/>Longitude: " + latlng.lng() +
+                    "<br/>The Tile Coordinate is:<br/> x: " + tileCoordinate.x +
+                    "<br/> y: " + tileCoordinate.y + "<br/> at zoom level " + map.getZoom();
+                map.openInfoWindow(latlng, myHtml);
+                document.getElementById("inputLat").value = latlng.lat();
+                document.getElementById("inputLng").value = latlng.lng();
+            });
+        } else {
+            alert("map not supported");
+        }
+    }
+};
+oB.addEvent(window, 'load', oB.init, false);
