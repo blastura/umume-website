@@ -9,48 +9,14 @@
 		the application context definition for the springapp DispatcherServlet
 	-->
 
-    <bean id="productManager" class="se.umu.cs.umume.website.lek.SimpleProductManager">
-        <property name="products">
-            <list>
-                <ref bean="product1"/>
-                <ref bean="product2"/>
-                <ref bean="product3"/>
-            </list>
-        </property>
-    </bean>
-
-    <bean id="product1" class="se.umu.cs.umume.website.lek.Product">
-        <property name="description" value="Lamp"/>
-        <property name="price" value="5.75"/>
-    </bean>
-        
-    <bean id="product2" class="se.umu.cs.umume.website.lek.Product">
-        <property name="description" value="Table"/>
-        <property name="price" value="75.25"/>
-    </bean>
-
-    <bean id="product3" class="se.umu.cs.umume.website.lek.Product">
-        <property name="description" value="Chair"/>
-        <property name="price" value="22.79"/>
-    </bean>
-
-    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-        <property name="basename" value="messages"/>
-    </bean>
-
-    <bean name="/person.htm" class="se.umu.cs.umume.website.main.PersonController">
-        <property name="currentPerson" ref="currentPerson"/>
-    </bean>
-    
-    <bean id="currentPerson" class="se.umu.cs.umume.website.main.PersonBean" />
-    
+    <bean name="/person.htm" class="se.umu.cs.umume.website.main.PersonController" />
+       
     <bean name="/findperson.htm" class="se.umu.cs.umume.website.main.FindPersonFormController">
         <property name="sessionForm" value="true"/>
         <property name="commandName" value="findPerson"/>
         <property name="commandClass" value="se.umu.cs.umume.website.main.FindPerson"/>
         <property name="formView" value="findperson"/>
         <property name="successView" value="redirect:person.htm"/>
-        <property name="currentPerson" ref="currentPerson"/>
     </bean>
     
     <bean name="/updateperson.htm" class="se.umu.cs.umume.website.main.UpdatePersonFormController">
@@ -62,23 +28,7 @@
     </bean>
     
     <bean name="/start.htm" class="se.umu.cs.umume.website.main.StartController" />
-    
-    <bean name="/hello.htm" class="se.umu.cs.umume.website.lek.InventoryController">
-        <property name="productManager" ref="productManager"/>
-    </bean>
-
-    <bean name="/priceincrease.htm" class="se.umu.cs.umume.website.lek.PriceIncreaseFormController">
-        <property name="sessionForm" value="true"/>
-        <property name="commandName" value="priceIncrease"/>
-        <property name="commandClass" value="se.umu.cs.umume.website.lek.PriceIncrease"/>
-        <property name="validator">
-            <bean class="se.umu.cs.umume.website.lek.PriceIncreaseValidator"/>
-        </property>
-        <property name="formView" value="priceincrease"/>
-        <property name="successView" value="hello.htm"/>
-        <property name="productManager" ref="productManager"/>
-    </bean>
-    
+        
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass"
