@@ -31,7 +31,7 @@ public class PersonController implements Controller {
 
             Unmarshaller u = jc.createUnmarshaller();
             URL url = new URL(
-                    "http://localhost:8080/UmuMeREST/users/"+userName);
+                    "http://192.168.0.5:8080/UmuMeREST/users/"+userName);
             person = (PersonBean) u.unmarshal(url);
         } catch (JAXBException e) {
             e.printStackTrace();
