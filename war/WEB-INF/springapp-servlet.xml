@@ -58,7 +58,7 @@
         <property name="commandName" value="updatePerson"/>
         <property name="commandClass" value="se.umu.cs.umume.website.main.UpdatePerson"/>
         <property name="formView" value="updateperson"/>
-        <property name="successView" value="person"/>
+        <property name="successView" value="redirect:person.htm"/>
     </bean>
     
     <bean name="/start.htm" class="se.umu.cs.umume.website.main.StartController" />

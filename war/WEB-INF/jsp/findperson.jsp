@@ -1,17 +1,12 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<form:form method="post" commandName="findPerson">
-  <table width="95%" bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5">
-    <tr>
-      <td align="right" width="20%">Increase (%):</td>
-        <td width="20%">
-          <form:input path="userName" />
-        </td>
-    </tr>
-  </table>
-  <br>
-  <input type="submit" align="center" value="Execute">
-</form:form>
-</body>
-</html>
+
+<div id="content-wide"><div class="container">
+    <form:form method="post" commandName="findPerson">
+        <form:input path="userName" />
+        <input type="submit" align="center" value="Execute">
+    </form:form>
+</div></div>
+    
+<%@ include file="/WEB-INF/jsp/bottom.jsp" %>

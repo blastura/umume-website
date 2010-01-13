@@ -1,5 +1,39 @@
+* {
+	margin:0;
+	padding:0;}
+
 body {
     font-family: helvetica neue, arial, sans-serif;
     font-size:14px;
-    background:url(images/body.gif) repeat-x #ededed;}
+    background:url(../images/body.gif) repeat-x #ededed;}
+#wrap {
+    width:880px;
+    margin:0 auto;
+}
+#header {
+    background:url(../images/header.jpg) no-repeat;
+    height:86px;
+    margin-bottom:20px;}
+#content-wide {
+    background-color:#fff;
+    float:left;
+    width:880px;}
+#content-left {
+    background-color:#fff;
+    width:430px;
+    float:left;}
+#content-right {
+    background-color:#fff;
+    width:430px;
+    float:right;}
+.container {
+    margin:20px;
+    float:left;}
     
+#bottom {
+	clear:both;
+	line-height:30px;
+    font-size:10px;
+    color:#c6b6b6;}
+#bottom a {
+    color:#988b8b;}
