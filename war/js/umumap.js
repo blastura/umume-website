@@ -16,7 +16,7 @@ var oB = {
     init: function() {
         if (GBrowserIsCompatible()) {
             var map = new GMap2(document.getElementById("map-canvas"));
-            map.setCenter(new GLatLng(63.82045852982942, 20.307787656784058), 19);
+            map.setCenter(new GLatLng(63.82045852982942, 20.307787656784058), 18);
 
             var boundaries = new GLatLngBounds(
                 new GLatLng(63.82012764313529, 20.30680791466784),
