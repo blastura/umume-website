@@ -7,8 +7,8 @@
       <title>asda</title>
       <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAgjvqnjJXMXDQHpN0ipkEUxQ5Xso4OvBTYOdbhMOxX_XafeJl_xSnGXaw18qDYgpRHk7b37JuQfNoXA" type="text/javascript"></script>
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js"></script>
-      <link rel="stylesheet" type="text/css" href="/springapp/css/style.css" />
-      <script type="text/javascript" src="/springapp/js/search.js"></script>
+      <link rel="stylesheet" type="text/css" href="/umume/css/style.css" />
+      <script type="text/javascript" src="/umume/js/search.js"></script>
    </head>
    <body>
       <div id="wrap">
