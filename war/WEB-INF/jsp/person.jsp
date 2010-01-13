@@ -9,6 +9,8 @@
       <p>
          <c:out value="${person.description}"/><br />
          <c:out value="${person.street}"/><br />
+         <c:out value="${person.longitude}" /><br />
+         <c:out value="${person.latitude}"/><br />
       </p>
       
       <ul>

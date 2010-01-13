@@ -4,7 +4,8 @@
 
 <html>
    <head>
-      <title>asda</title>
+      <title>UmuMe</title>
+      <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
       <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAgjvqnjJXMXDQHpN0ipkEUxQ5Xso4OvBTYOdbhMOxX_XafeJl_xSnGXaw18qDYgpRHk7b37JuQfNoXA" type="text/javascript"></script>
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js"></script>
       <link rel="stylesheet" type="text/css" href="/umume/css/style.css" />

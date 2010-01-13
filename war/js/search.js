@@ -70,7 +70,7 @@ var aj = {
         $.each(persons, function(i, person) {
             var li = $("<li>");
             var a = $("<a>");
-            a.attr("href", "?username=" + person.uid);
+            a.attr("href", "/umume/person/" + person.uid);
             a.append(document.createTextNode(person.givenName + " " + person.familyName + " <" + person.uid + ">"));
             li.append(a);
             ul.append(li);

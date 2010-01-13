@@ -24,7 +24,7 @@
     <bean name="/updateperson.htm" class="se.umu.cs.umume.website.main.UpdatePersonFormController">
         <property name="sessionForm" value="true"/>
         <property name="commandName" value="updatePerson"/>
-        <property name="commandClass" value="se.umu.cs.umume.website.main.UpdatePerson"/>
+        <property name="commandClass" value="se.umu.cs.umume.website.main.PersonBean"/>
         <property name="formView" value="updateperson"/>
         <property name="successView" value="redirect:person.htm"/>
     </bean>

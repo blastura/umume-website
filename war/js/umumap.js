@@ -41,12 +41,12 @@ var oB = {
                 tileCoordinate.y = Math.floor(tilePoint.y / 256);
                 var myHtml = "Latitude: " + latlng.lat() + "<br/>Longitude: " + latlng.lng();
                 map.openInfoWindow(latlng, myHtml);
-                document.getElementById("inputLat").value = latlng.lat();
-                document.getElementById("inputLng").value = latlng.lng();
+                document.getElementById("latitude").value = latlng.lat();
+                document.getElementById("longitude").value = latlng.lng();
             });
         } else {
             alert("map not supported");
         }
     }
 };
-oB.addEvent(window, 'load', oB.init, false);
+    oB.addEvent(window, 'load', oB.init, false);

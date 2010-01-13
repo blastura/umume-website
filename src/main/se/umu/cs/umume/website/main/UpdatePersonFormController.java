@@ -25,9 +25,8 @@ public class UpdatePersonFormController extends SimpleFormController {
     /** Logger for this class and subclasses */
     //protected final Log logger = LogFactory.getLog(getClass());
     private static final Logger logger = LoggerFactory.getLogger(UpdatePersonFormController.class);
-
+    
     public ModelAndView onSubmit(Object command) throws ServletException {
-
         /*
         // Create a trust manager that does not validate certificate chains
         TrustManager[] trustAllCerts = new TrustManager[]{
@@ -61,17 +60,17 @@ public class UpdatePersonFormController extends SimpleFormController {
 
 
         PersonBean person = new PersonBean();
-        String userName = ((UpdatePerson) command).getUserName();
-        String ticket = ((UpdatePerson) command).getTicket();
-        person.setTwitterName(((UpdatePerson) command).getTwitter());
-        person.setDescription(((UpdatePerson) command).getDescription());
+        String userName = ((PersonBean) command).getUid();
+        String ticket = ((PersonBean) command).getTicket();
+        person.setTwitterName(((PersonBean) command).getTwitterName());
+        person.setDescription(((PersonBean) command).getDescription());
         try {
             Client client = Client.create();
             WebResource webResource;
             webResource = client.resource("http://192.168.0.5:8080/UmuMeREST/users/"+userName+"?ticket="+ticket 
-                    + "&service="+URLEncoder.encode("http://localhost:8080/springapp/updateperson.htm?username="+userName,"UTF-8"));
+                    + "&service="+URLEncoder.encode("http://localhost:8080/umume/updateperson.htm?username="+userName,"UTF-8"));
 
-            ClientResponse response = webResource.type("application/xml").put(ClientResponse.class, person);
+            ClientResponse response = webResource.type("application/xml").put(ClientResponse.class, command);
             logger.error(response.toString());
 
         } catch (UnsupportedEncodingException e) {
@@ -82,7 +81,8 @@ public class UpdatePersonFormController extends SimpleFormController {
 
     protected Object formBackingObject(HttpServletRequest request)
     throws ServletException {
-        UpdatePerson updatePerson = new UpdatePerson();
+        logger.info("formBackingObject()");
+        PersonBean updatePerson = new PersonBean();
 
         String userName = request.getParameter("username");
 
@@ -102,9 +102,9 @@ public class UpdatePersonFormController extends SimpleFormController {
         }
 
         updatePerson.setDescription(person.getDescription());
-        updatePerson.setTwitter(person.getTwitterName());
+        updatePerson.setTwitterName(person.getTwitterName());
         updatePerson.setTicket(request.getParameter("ticket"));
-        updatePerson.setUserName(request.getParameter("username"));
+        updatePerson.setUid(request.getParameter("username"));
 
         return updatePerson;
     }
