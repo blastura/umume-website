@@ -21,7 +21,7 @@ var oB = {
             var boundaries = new GLatLngBounds(
                 new GLatLng(63.82012764313529, 20.30680791466784),
                 new GLatLng(63.82070236978285, 20.30879572927132));
-            var oldmap = new GGroundOverlay("images/mit4.png", boundaries);
+            var oldmap = new GGroundOverlay("/umume/images/mit4.png", boundaries);
             map.setUIToDefault();
             map.addOverlay(oldmap);
             var myLayer = new GLayer("com.panoramio.all");
@@ -39,9 +39,7 @@ var oB = {
                 tilePoint = currentProjection.fromLatLngToPixel(latlng, map.getZoom());
                 tileCoordinate.x = Math.floor(tilePoint.x / 256);
                 tileCoordinate.y = Math.floor(tilePoint.y / 256);
-                var myHtml = "Latitude: " + latlng.lat() + "<br/>Longitude: " + latlng.lng() +
-                    "<br/>The Tile Coordinate is:<br/> x: " + tileCoordinate.x +
-                    "<br/> y: " + tileCoordinate.y + "<br/> at zoom level " + map.getZoom();
+                var myHtml = "Latitude: " + latlng.lat() + "<br/>Longitude: " + latlng.lng();
                 map.openInfoWindow(latlng, myHtml);
                 document.getElementById("inputLat").value = latlng.lat();
                 document.getElementById("inputLng").value = latlng.lng();

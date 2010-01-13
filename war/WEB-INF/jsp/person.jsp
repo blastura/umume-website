@@ -34,9 +34,9 @@
 </div>
 <div id="content-right">
    <div class="container">
-      <div id="map-canvas" style="width: 390px; height: 300px; float:right;"></div>
+      <div id="map-canvas" style="width: 390px; height: 500px; float:right;"></div>
    </div>
 </div>
 
-<script type="text/javascript" src="js/umumap.js"></script>
+<script type="text/javascript" src="/umume/js/umumap.js"></script>
 <%@ include file="/WEB-INF/jsp/bottom.jsp" %>
