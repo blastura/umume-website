@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 
-<project name="springapp" basedir="." default="usage">
+<project name="umume" basedir="." default="usage">
     <property file="build.properties"/>
 
     <property name="src.dir" value="src/main"/>
     <property name="web.dir" value="war"/>
     <property name="build.dir" value="${web.dir}/WEB-INF/classes"/>
     <property name="test.dir" value="src/test"/>
-    <property name="name" value="springapp"/>
+    <property name="name" value="umume"/>
 
 
     <path id="master-classpath">
