@@ -66,10 +66,13 @@ li {
     -moz-opacity: 0.9;
     opacity:.90;
     filter: alpha(opacity=90);
-    width:470px;
+    width:405px;
     position:absolute;
     left:10px;
-    top:64px;}
+    top:69px;
+    border-style:solid;
+    border-color:#ccc;
+    border-width:0 1px 1px;}
  #search-output ul {
     margin:20px;}
  #search-output li {

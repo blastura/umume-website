@@ -1,4 +1,8 @@
 <%@ page session="false"%>
+<%@ page language="java" pageEncoding="UTF-8"%>
+<%response.setContentType("text/html;charset=utf-8");%>
+<%request.setCharacterEncoding("utf-8");%> 
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
@@ -18,7 +22,7 @@
       <div id="wrap">
          <div id="header">
             <div id="searcher">
-               <input type="text" id="search-field" name="search" value="UMUMe sök..." />
+               <input type="text" id="search-field" name="search" value="UMUMe sÃ¶k..." />
                <span id="search-status"></span>
                <div id="search-output"></div>
             </div>
