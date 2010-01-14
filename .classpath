@@ -15,5 +15,9 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-webmvc.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/standard.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="src" path="/umume-rest"/>
+	<classpathentry kind="lib" path="/Users/anton/Documents/skola/soa/umume/umume-rest/lib/test/slf4j-api-1.5.8.jar"/>
+	<classpathentry kind="lib" path="/Users/anton/Documents/skola/soa/umume/umume-rest/lib/test/servlet-api-2.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
