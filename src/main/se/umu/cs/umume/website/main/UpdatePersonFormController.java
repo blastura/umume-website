@@ -75,7 +75,7 @@ public class UpdatePersonFormController extends SimpleFormController {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return new ModelAndView(getSuccessView(), "username", userName);
+        return new ModelAndView("person/"+userName);
     }
 
     protected Object formBackingObject(HttpServletRequest request)
