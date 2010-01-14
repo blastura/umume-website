@@ -35,7 +35,7 @@ var aj = {
             $("#search-status").fadeIn(500);
             
             $.ajax({
-                url: "http://mega.cs.umu.se:8080/UmuMeREST/search/" + searchVal + "?callback=?",
+                url: "http://mega.cs.umu.se:8080/umume-rest/search/" + searchVal + "?callback=?",
                 success: aj.dataLoaded,
                 error: aj.failure,
                 type: "GET",
