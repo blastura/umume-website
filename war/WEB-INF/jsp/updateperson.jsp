@@ -1,9 +1,10 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <div id="content-left">
    <div class="container">
-      <h1>Uppdatera information <c:out value="${person.uid}" /></h1>
+      <h1>Uppdatera information  <c:out value="${person.uid}" /></h1>
 
       <form:form method="post" commandName="updatePerson">
          <ul>

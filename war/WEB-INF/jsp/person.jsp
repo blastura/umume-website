@@ -1,4 +1,5 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 
 <div id="content-left">
    <div class="container">

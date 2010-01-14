@@ -1,5 +1,6 @@
 <%@ page session="false"%>
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" %> 
+
 <%response.setContentType("text/html;charset=utf-8");%>
 <%request.setCharacterEncoding("utf-8");%> 
 
