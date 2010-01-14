@@ -34,7 +34,7 @@ var aj = {
             $("#search-status").append(document.createTextNode("Searching"));
             $("#search-status").fadeIn(500);
             $.ajax({
-                url: "http://localhost:8080/UmuMeREST/search/" + searchVal + "?callback=?",
+                url: "http://mega.cs.umu.se:8080/UmuMeREST/search/" + searchVal + "?callback=?",
                 success: aj.dataLoaded,
                 error: aj.failure,
                 type: "GET",
@@ -79,6 +79,11 @@ var aj = {
 
     init : function() {
         aj.addTextAreaCallback(document.getElementById("search-field"), aj.ajaxSearch, 500);
+        $('#search-field').bind("focus", function(e) {
+    		$('#search-field').val("");
+    		$('#search-field').unbind("focus");
+    		$('#search-field').addClass("active");
+        });
     }
 };
     aj.addEvent(window, 'load', aj.init, false);

@@ -23,7 +23,8 @@ li {
 #header {
     background:url(../images/header.jpg) no-repeat;
     height:86px;
-    margin-bottom:20px;}
+    margin-bottom:20px;
+    position:relative;}
 #content-wide {
     background-color:#fff;
     float:left;
@@ -39,7 +40,6 @@ li {
 .container {
     margin:20px;
     float:left;}
-    
 #bottom {
 	clear:both;
 	line-height:30px;
@@ -47,6 +47,32 @@ li {
     color:#c6b6b6;}
 #bottom a {
     color:#988b8b;}
+ 
+ #search-field {
+    position:absolute;
+    left:5px;
+    top:25px;
+    font-size:35px;
+    font-weight:bold;
+    width:470px;
+    height:39px;
+    border:none;
+    color:#bbb;}
+ #search-field.active {
+    color:#777;}
+ #search-output {
+    background-color:#fff;
+    -moz-opacity: 0.9;
+    opacity:.90;
+    filter: alpha(opacity=90);
+    width:470px;
+    position:absolute;
+    left:10px;
+    top:64px;}
+ #search-output ul {
+    margin:20px;}
+ #search-output li {
+    line-height:1.5;} 
     
 #tweets li {
 	background:url(../images/bullet1.png) no-repeat 0 1px;
