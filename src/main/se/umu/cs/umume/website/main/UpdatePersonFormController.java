@@ -25,7 +25,7 @@ public class UpdatePersonFormController extends SimpleFormController {
     /** Logger for this class and subclasses */
     //protected final Log logger = LogFactory.getLog(getClass());
     private static final Logger logger = LoggerFactory.getLogger(UpdatePersonFormController.class);
-    private String restService = "http://mega.cs.umu.se:8080/UmuMeREST/";
+    private String restService = "https://mega.cs.umu.se:8080/UmuMeREST/";
     
     public ModelAndView onSubmit(Object command) throws ServletException {
         /*
@@ -59,7 +59,6 @@ public class UpdatePersonFormController extends SimpleFormController {
         Client client = Client.create(config);
          */
 
-
         PersonBean person = new PersonBean();
         String userName = ((PersonBean) command).getUid();
         String ticket = ((PersonBean) command).getTicket();
@@ -72,7 +71,6 @@ public class UpdatePersonFormController extends SimpleFormController {
                     + "&service="+URLEncoder.encode("http://localhost:8080/umume/updateperson.htm?username="+userName,"UTF-8"));
 
             ClientResponse response = webResource.type("application/xml").put(ClientResponse.class, command);
-            logger.error(response.toString());
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
