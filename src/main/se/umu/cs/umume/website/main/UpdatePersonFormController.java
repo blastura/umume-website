@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,64 +18,35 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
+import se.umu.cs.umume.website.rest.UmumeRestUtil;
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
 
 public class UpdatePersonFormController extends SimpleFormController {
 
     /** Logger for this class and subclasses */
     //protected final Log logger = LogFactory.getLog(getClass());
     private static final Logger logger = LoggerFactory.getLogger(UpdatePersonFormController.class);
-    private String restService = "https://mega.cs.umu.se:8080/UmuMeREST/";
+    private String restService = "https://mega.cs.umu.se:8443/UmuMeREST/";
     
     public ModelAndView onSubmit(Object command) throws ServletException {
-        /*
-        // Create a trust manager that does not validate certificate chains
-        TrustManager[] trustAllCerts = new TrustManager[]{
-            new X509TrustManager() {
-                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                    return null;
-                }
-                public void checkClientTrusted( java.security.cert.X509Certificate[] certs, String authType ) {
-                }
-                public void checkServerTrusted( java.security.cert.X509Certificate[] certs, String authType ) {
-                }
-            }
-        };
-        // Install the all-trusting trust manager
-        SSLContext sc = null;
-        try {
-            sc = SSLContext.getInstance( "SSL" );
-            sc.init( null, trustAllCerts, new java.security.SecureRandom() );
-            HttpsURLConnection.setDefaultSSLSocketFactory( sc.getSocketFactory() );
-        }
-        catch ( Exception e ) {
-            //We can not recover from this exception.
-            e.printStackTrace();
-        }
-         */
-        /*
-        ClientConfig config = new DefaultClientConfig();
-        config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(null, sc));
-        Client client = Client.create(config);
-         */
-
-        PersonBean person = new PersonBean();
         String userName = ((PersonBean) command).getUid();
         String ticket = ((PersonBean) command).getTicket();
-        person.setTwitterName(((PersonBean) command).getTwitterName());
-        person.setDescription(((PersonBean) command).getDescription());
         try {
             Client client = Client.create();
-            WebResource webResource;
-            webResource = client.resource(restService + "users/"+userName+"?ticket="+ticket 
-                    + "&service="+URLEncoder.encode("http://localhost:8080/umume/updateperson.htm?username="+userName,"UTF-8"));
-
-            ClientResponse response = webResource.type("application/xml").put(ClientResponse.class, command);
+            String httpsResourceAddress = restService + "users/"+userName+"?ticket="+ticket 
+            + "&service="+URLEncoder.encode("http://localhost:8080/umume/updateperson.htm?username="+userName,"UTF-8");
+            ClientResponse response = UmumeRestUtil.updateUser((PersonBean) command, httpsResourceAddress);
+            // TODO: verify response
 
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
+        } catch (NoSuchAlgorithmException e) {
+            logger.error(e.getMessage());
+        }
+        catch (KeyManagementException e) {
+            logger.error(e.getMessage());
         }
         return new ModelAndView("person/"+userName);
     }
