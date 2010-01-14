@@ -30,9 +30,11 @@ var oB = {
       // Add marker
       var lat = document.getElementById("latitude").innerHTML;
       var lng = document.getElementById("longitude").innerHTML;
+      var posMarker;
       if (!isNaN(lat) && !isNaN(lng)) {
         var point = new GLatLng(lat, lng);
-        map.addOverlay(new GMarker(point));
+        posMarker = new GMarker(point);
+        map.addOverlay(posMarker);
       }
 
 
@@ -45,8 +47,6 @@ var oB = {
                            var tilePoint = new GPoint();
                            var currentProjection = G_NORMAL_MAP.getProjection();
                            tilePoint = currentProjection.fromLatLngToPixel(latlng, map.getZoom());
-                           tileCoordinate.x = Math.floor(tilePoint.x / 256);
-                           tileCoordinate.y = Math.floor(tilePoint.y / 256);
                            var myHtml = "Latitude: " + latlng.lat() + "<br/>Longitude: " + latlng.lng();
                            map.openInfoWindow(latlng, myHtml);
                            document.getElementById("latitude").value = latlng.lat();
