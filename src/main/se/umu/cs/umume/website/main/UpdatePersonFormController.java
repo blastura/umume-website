@@ -28,8 +28,8 @@ public class UpdatePersonFormController extends SimpleFormController {
     /** Logger for this class and subclasses */
     //protected final Log logger = LogFactory.getLog(getClass());
     private static final Logger logger = LoggerFactory.getLogger(UpdatePersonFormController.class);
-    private String httpsRestService = "https://mega.cs.umu.se:8443/UmuMeREST/";
-    private String httpRestService = "http://mega.cs.umu.se:8080/UmuMeREST/";
+    private String httpsRestService = "https://mega.cs.umu.se:8443/umume-rest/";
+    private String httpRestService = "http://mega.cs.umu.se:8080/umume-rest/";
     
     public ModelAndView onSubmit(Object command) throws ServletException {
         String userName = ((PersonBean) command).getUid();

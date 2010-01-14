@@ -19,7 +19,7 @@ import org.springframework.web.servlet.mvc.Controller;
 public class PersonController implements Controller {
 
     protected final Log logger = LogFactory.getLog(getClass());
-    private String restService = "http://mega.cs.umu.se:8080/UmuMeREST/";
+    private String restService = "http://mega.cs.umu.se:8080/umume-rest/";
     
     public ModelAndView handleRequest(HttpServletRequest request,
             HttpServletResponse arg1) throws Exception {
