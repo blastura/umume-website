@@ -52,10 +52,11 @@ li {
     position:absolute;
     left:5px;
     top:25px;
-    font-size:35px;
+    font-size:30px;
+    padding-top:2px;
     font-weight:bold;
     width:470px;
-    height:39px;
+    height:37px;
     border:none;
     color:#bbb;}
  #search-field.active {
