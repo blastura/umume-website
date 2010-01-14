@@ -28,14 +28,16 @@ public class UpdatePersonFormController extends SimpleFormController {
     /** Logger for this class and subclasses */
     //protected final Log logger = LogFactory.getLog(getClass());
     private static final Logger logger = LoggerFactory.getLogger(UpdatePersonFormController.class);
-    private String restService = "https://mega.cs.umu.se:8443/UmuMeREST/";
+    private String httpsRestService = "https://mega.cs.umu.se:8443/UmuMeREST/";
+    private String httpRestService = "http://mega.cs.umu.se:8080/UmuMeREST/";
     
     public ModelAndView onSubmit(Object command) throws ServletException {
         String userName = ((PersonBean) command).getUid();
         String ticket = ((PersonBean) command).getTicket();
         try {
             Client client = Client.create();
-            String httpsResourceAddress = restService + "users/"+userName+"?ticket="+ticket 
+            String httpsResourceAddress = httpsRestService + "users/" 
+            + userName + "?ticket=" + ticket 
             + "&service="+URLEncoder.encode("http://localhost:8080/umume/updateperson.htm?username="+userName,"UTF-8");
             ClientResponse response = UmumeRestUtil.updateUser((PersonBean) command, httpsResourceAddress);
             // TODO: verify response
@@ -44,11 +46,10 @@ public class UpdatePersonFormController extends SimpleFormController {
             logger.error(e.getMessage());
         } catch (NoSuchAlgorithmException e) {
             logger.error(e.getMessage());
-        }
-        catch (KeyManagementException e) {
+        } catch (KeyManagementException e) {
             logger.error(e.getMessage());
         }
-        return new ModelAndView("person/"+userName);
+        return new ModelAndView(getSuccessView(), "username", userName);
     }
 
     protected Object formBackingObject(HttpServletRequest request)
@@ -65,7 +66,7 @@ public class UpdatePersonFormController extends SimpleFormController {
 
             Unmarshaller u = jc.createUnmarshaller();
             URL url = new URL(
-                    restService + "users/"+userName);
+                    httpRestService + "users/"+userName);
             person = (PersonBean) u.unmarshal(url);
         } catch (JAXBException e) {
             e.printStackTrace();
