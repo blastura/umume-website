@@ -32,6 +32,7 @@ public class PersonController implements Controller {
             Unmarshaller u = jc.createUnmarshaller();
             URL url = new URL(
                     restService + "users/" + userName);
+            
             person = (PersonBean) u.unmarshal(url);
         } catch (JAXBException e) {
             e.printStackTrace();
