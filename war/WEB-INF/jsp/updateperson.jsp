@@ -4,7 +4,7 @@
 
 <div id="content-left">
    <div class="container">
-      <h1>Uppdatera information  <c:out value="${person.uid}" /></h1>
+      <h1>Uppdatera information: <c:out value="${person.uid}" /></h1>
 
       <form:form method="post" commandName="updatePerson">
          <ul>

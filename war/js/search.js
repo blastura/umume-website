@@ -33,6 +33,7 @@ var aj = {
             $("#search-status").empty();
             $("#search-status").append(document.createTextNode("Searching"));
             $("#search-status").fadeIn(500);
+            
             $.ajax({
                 url: "http://mega.cs.umu.se:8080/UmuMeREST/search/" + searchVal + "?callback=?",
                 success: aj.dataLoaded,
@@ -42,6 +43,8 @@ var aj = {
                 cache: false,
                 processData: false
             });
+        } else if (searchVal.length < 1) {
+        	$("#search-output").fadeOut(1000);
         }
     },
 
@@ -75,12 +78,16 @@ var aj = {
             li.append(a);
             ul.append(li);
         });
+        $("#search-output").fadeIn(500);
     },
 
     init : function() {
         aj.addTextAreaCallback(document.getElementById("search-field"), aj.ajaxSearch, 500);
         $('#search-field').bind("focus", function(e) {
-    		$('#search-field').val("");
+        	
+        	if ($('#search-field').val().length == 12) {
+        		$('#search-field').val("");
+        	}
     		$('#search-field').unbind("focus");
     		$('#search-field').addClass("active");
         });
