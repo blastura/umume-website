@@ -25,6 +25,7 @@ public class UpdatePersonFormController extends SimpleFormController {
     /** Logger for this class and subclasses */
     //protected final Log logger = LogFactory.getLog(getClass());
     private static final Logger logger = LoggerFactory.getLogger(UpdatePersonFormController.class);
+    private String restService = "http://mega.cs.umu.se:8080/UmuMeREST/";
     
     public ModelAndView onSubmit(Object command) throws ServletException {
         /*
@@ -67,7 +68,7 @@ public class UpdatePersonFormController extends SimpleFormController {
         try {
             Client client = Client.create();
             WebResource webResource;
-            webResource = client.resource("http://192.168.0.5:8080/UmuMeREST/users/"+userName+"?ticket="+ticket 
+            webResource = client.resource(restService + "users/"+userName+"?ticket="+ticket 
                     + "&service="+URLEncoder.encode("http://localhost:8080/umume/updateperson.htm?username="+userName,"UTF-8"));
 
             ClientResponse response = webResource.type("application/xml").put(ClientResponse.class, command);
@@ -93,7 +94,7 @@ public class UpdatePersonFormController extends SimpleFormController {
 
             Unmarshaller u = jc.createUnmarshaller();
             URL url = new URL(
-                    "http://192.168.0.5:8080/UmuMeREST/users/"+userName);
+                    restService + "users/"+userName);
             person = (PersonBean) u.unmarshal(url);
         } catch (JAXBException e) {
             e.printStackTrace();

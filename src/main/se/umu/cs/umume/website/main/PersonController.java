@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.Controller;
 public class PersonController implements Controller {
 
     protected final Log logger = LogFactory.getLog(getClass());
+    private String restService = "http://mega.cs.umu.se:8080/UmuMeREST/";
     
     public ModelAndView handleRequest(HttpServletRequest request,
             HttpServletResponse arg1) throws Exception {
@@ -30,7 +31,7 @@ public class PersonController implements Controller {
 
             Unmarshaller u = jc.createUnmarshaller();
             URL url = new URL(
-                    "http://192.168.0.5:8080/UmuMeREST/users/"+userName);
+                    restService + "users/" + userName);
             person = (PersonBean) u.unmarshal(url);
         } catch (JAXBException e) {
             e.printStackTrace();
