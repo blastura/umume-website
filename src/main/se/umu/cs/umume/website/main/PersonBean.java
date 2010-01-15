@@ -17,6 +17,7 @@ public class PersonBean {
     private String uid;
     private String givenName;
     private String familyName;
+    private String employeeType;
     private URI photoURI;
     private List<String> emails;
     private List<String> tweets;
@@ -25,6 +26,7 @@ public class PersonBean {
     private String physicalDeliveryOffice;
     private String street;
     private String postalCode;
+    private String postalAddress;
     private String institution;
     private String buildingName;
     private String roomNumber;
@@ -243,10 +245,23 @@ public class PersonBean {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
-    public String getTicket() {
-        return ticket;
+    public void setPostalAddress(String postalAddress) {
+        this.postalAddress = postalAddress;
+    }
+    public String getPostalAddress() {
+        return postalAddress;
+    }
+    public void setEmployeeType(String employeeType) {
+        this.employeeType = employeeType;
+    }
+    public String getEmployeeType() {
+        return employeeType;
     }
     public void setTicket(String ticket) {
         this.ticket = ticket;
     }
+    public String getTicket() {
+        return ticket;
+    }
 }
+
