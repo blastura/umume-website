@@ -286,6 +286,9 @@ following command:\\
 This will create \textit{umume-rest.war} which can be deployed within
 any Java servlet container.
 
+Third party libraries that \textit{Umume-rest} depend upon are
+specified int the file \texttt{ivy.xml}, issuing \textit{ant resolve}
+will download and install all those libraries in the \texttt{lib} folder.
 
 \subsection{Umume-website}
 This section explains how to understand, compile and deploy the
@@ -366,7 +369,7 @@ change information with PUT requests.
 
 The images in Figure
 \ref{fig:images/startpage}-\vref{fig:images/edited-user} describes how
-to navigate through the \textit{umume-website} to view and update
+to navigate through the \textit{Umume-website} to view and update
 information about yourself. You should be able to follow this scenario
 at \url{http://piko.cs.umu.se:8080/umume/} which should be available
 some time from \today.
@@ -414,25 +417,29 @@ some time from \today.
   \label{fig:images/edited-user}
 \end{figure}
 \newpage
+
 \section{System description}\label{sec:system}
 % Beskriv översiktligt hur programmet är uppbyggt och hur det löser
 % problemet.
 
-% The GCom middleware consists of three (logical) modules, the group
-% management module, the communication module and the message ordering
-% module. These are, respectively, responsible for handling group
-% membership issues, communication message exchange semantics and
-% message (re)ordering issues. All of these modules need to function
-% properly in order for your system to be able to ensure correct
-% message delivery semantics.
 
-\begin{figure*}[!bht]
-  \centerline{\includegraphics[width=140mm]{images/systemarchitecture.jpg}}
-  \caption{GCom stack}
-  \label{fig:images/sysarch}
-\end{figure*}
+% \begin{figure*}[!h]
+%   \centerline{\includegraphics[width=140mm]{images/systemarchitecture.jpg}}
+%   \caption{System design}
+%   \label{fig:images/sysarch}
+% \end{figure*}
 
-The system is consists of different modules, Figure \ref{fig:images/sysarch} gives an overview of the parts.
+The complete system described in this report consists of different
+modules. The top part of this Figure \ref{fig:images/sysdes}
+represents \textit{Umume-website} while the bottom part represents
+\textit{Umume-rest}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=3.3in]{images/systemarchitecture.jpg}
+  \caption{System design}
+  \label{fig:images/sysdes}
+\end{figure}
 
 \subsection{Umume-rest}\label{sec:umume-rest}
 The RESTful web service uses the \textit{JAX-RS
@@ -443,8 +450,8 @@ merely adding annotations to specify at which path the resource is
 available and what HTTP-methods the resource is accessable by. Se an
 example in CodeSnippet \ref{code:jaxrs}. This is basically what is
 used by \textit{Umume-rest} to provide resources describing users. A
-java bean \textit{PersonBean.java} is used to represent users. This
-bean is marshaled and unmarshaled by
+java bean (\textit{PersonBean.java}) is used to represent users. This
+bean is marshaled and unmarshal by
 JAXB\footnote{\url{https://jaxb.dev.java.net/}} into different
 mediatypes depending on what is requested. Our user resources can be
 fetched as XML or JSON\footnote{\url{http://www.json.org/}} depending
@@ -461,8 +468,8 @@ public class UsersResource {
     // It can return XML and JSON
     @Produces({"application/xml",
                "application/json"})
-    public Person getUserXML(
-                       @PathParam("uid") String uid) {
+    public PersonBean getUserXML(
+                   @PathParam("uid") String uid) {
         //...
         return person;
     }
@@ -471,6 +478,21 @@ public class UsersResource {
   \caption{JAX-RS resource}\label{code:jaxrs}
 \end{code}
 
+The response from a request to a specific user is made up by first
+getting all information about the user that LDAP provides, then
+possible information from the persistance layer is added, lastly
+various API calls are made to get extra information. In this case the
+Twitter API is used to get Tweets. Figure~\ref{fig:images/personbean}
+shows a summary of this communication.
+
+\begin{figure}[!htb]
+  \centering
+  \includegraphics[width=3in]{images/personbean.pdf}
+  \caption{Building a PersonBean}
+  \label{fig:images/personbean}
+\end{figure}
+
+
 \subsubsection{Update user resource}\label{sec:updateuser}
 To update a user resource a valid CAS user is required. The request is
 made by a HTTP PUT request with new information about the referenced
@@ -478,11 +500,12 @@ user, see example implementation in CodeSnippet
 \ref{code:updateResource}. This example consumes XML with updated
 information about the user resource.
 
-To validate whether the request comes from the same user that requests
-the change a CAS ticket is required as a query string. This supplied
-ticket from CAS is validated at \url{https://cas.umu.se} using a
+To validate whether the request is made from the user that the
+resource is describing a CAS ticket is required as a query string.
+This supplied ticket from CAS is then validated at
+\url{https://cas.umu.se} using a
 CAS-client\footnote{\url{http://www.jasig.org/cas}}. If the supplied
-ticket is valid a username can be extracted, and if this username is
+ticket is valid, a username can be extracted and if this username is
 the same as the username of the resource to change it can be certain
 that the request comes from the person who is represented by the
 resource. Since a ticket is confidential information all this network
@@ -496,10 +519,10 @@ communication.
 @PUT
 @Consumes(MediaType.APPLICATION_XML)
 public Response updateUser(
-        @PathParam("uid") String uid,
-        PersonBean pb,
-        @QueryParam("ticket") String ticket,
-        @QueryParam("service") String service) {
+            @PathParam("uid") String uid,
+            PersonBean pb,
+            @QueryParam("ticket") String ticket,
+            @QueryParam("service") String service) {
         // validate user, persist updated info
         return Response; //200 OK or errorcode
 }
@@ -519,7 +542,7 @@ public Response updateUser(
 If \textit{Umume-rest} is compiled and archived into a WAR-file for
 deployment, the file \texttt{web.xml} need to specify in which package
 the resources are located, this can be seen in an excerpt from
-\texttt{web.xml} in CodeSnippet \ref{code:webxml}. This file also
+\texttt{web.xml} in CodeSnippet \vref{code:webxml}. This file also
 specifies that PUT requests on user resources need to be made with a
 confidential transporting guarantee to make sure that CAS tickets are
 confidential.
@@ -548,7 +571,12 @@ confidential.
 \end{code}
 
 \subsubsection{Persistance layer}\label{sec:persistance}
-To persist information received by PUT requests on user resources a persistence layer using JDBC\footnote{\url{http://java.sun.com/javase/technologies/database/}} and SQLite\footnote{\url{http://www.sqlite.org/}} is used. In this implementation this layer consists of a single Java class and a portable SQLite database file.
+To persist information received by PUT requests on user resources a
+persistence layer using
+JDBC\footnote{\url{http://java.sun.com/javase/technologies/database/}}
+and SQLite\footnote{\url{http://www.sqlite.org/}} is used. In this
+implementation this layer consists of a single Java class and a
+portable SQLite database file.
 
 When a request is made to update a user resource the new information
 is inserted or updated into this specified database. Prepared
@@ -587,13 +615,6 @@ following sub directories:
 \item \verb!lib! contains all requires third-party libraries
   needed by the \textit{Umume web service}.
 \item \verb!conf! contains the build-properties file and the jar-file for Ivy.
-\end{itemize}
-
-And these are the files in the catalog:
-\begin{itemize}
-\item \verb!build.xml! contains settings for building this web service.
-\item \verb!ivy.xml! contains all Ivy dependencies.
-\item \verb!ivysettings.xml! contains the Ivy settings.
 \end{itemize}
 
 \subsection{Umume-website}\label{sec:umume-website}
@@ -645,9 +666,6 @@ easily manipulated. In this case a PNG-overlay image has been
 put on top of the map. This images shows all rooms on the top
 floor of the MIT building and makes it easier to understand where
 things are.
-
-The library containing all map-functions is hosted at Googles
-servers.
 
 \subsubsection{Jersey}
 The web site is using Jersey as its client to the REST-service and
@@ -728,20 +746,45 @@ encountered while implementing \textit{Umume}.
 % % ert val av miljö.
 
 \subsection{Service registry}
-As implemented right now the provided client \textit{Umume-website} nor the \textit{Umume-rest} make use of any registry to bind and find the service, this means that the client is tightly coupled to a pre-specified URI. A better client would at least keep this address in a directory service of some kind to make it easily switchable.
+As implemented right now the provided client \textit{Umume-website}
+nor the web service \textit{Umume-rest} make use of any registry to
+bind and find the service, this means that the client is tightly
+coupled to a pre-specified URI. A better client would at least keep
+this address in a directory service of some kind to make it easily
+switchable.
 
 \subsection{}
 
 \subsection{Website improvements}
-The supplied website is to be seen as a prototype client of the web service. Much can be done to improve the user interface. For example it would be nice to have a login page which validates CAS-tickets and redirects users to their own page. Right now the site does not know which user you are. Their is an update link on every users page, and no informative error messages about what happens or doesn't happen when you try to update someone else's information.
+The supplied website is to be seen as a prototype client of the web
+service. Much can be done to improve the user interface. For example
+it would be nice to have a login page which validates CAS-tickets and
+redirects users to their own page. Right now the site does not know
+which user you are. Their is an update link on every users page, and
+no informative error messages about what happens or doesn't happen
+when you try to update someone else's information.
 
-It would also be nice to have predefined LDAP searches that list employees at different faculties and plot their locations on a map.
+It would also be nice to have predefined LDAP searches that list
+employees at different faculties and plot their locations on a map.
 
 \subsection{Character encoding}
-We ran into some problems with character encoding with international characters stored in the database. We have tried to use UTF-8 everywhere in the project but somehow the information persisted doesn't seem to be returned in the same encoding as the rest of the information for example from LDAP and Twitter. This was not fixed due to lack of time.
+We got some problems with character encoding with international
+characters stored in the database. We have tried to use UTF-8
+everywhere in the project but somehow the information persisted
+doesn't seem to be returned in the same encoding as the rest of the
+information for example from LDAP and Twitter. This was not fixed due
+to lack of time.
 
 \subsection{Security}\label{sec:security}
-We ran into some problems creating a secure SSL client that could issue a PUT request using HTTPS. Since the service uses a self signed certificate the client would need be aware of and trust that certificate. This was the first experimenting with secure connections in Java and we had a hard time finding and understanding information about the usage of classes such as \url{javax.net.ssl.SSLContext}, \url{javax.net.ssl.HostnameVerifier} and \url{javax.net.ssl.TrustManager}. Our client now uses a TrustManager that trusts everything, which is probably not a very good idea.
+We ran into some problems creating a secure SSL client that could
+issue a PUT request using HTTPS. Since the service uses a self signed
+certificate the client would need be aware of and trust that
+certificate. This was the first experimenting with secure connections
+in Java and we had a hard time finding and understanding information
+about the usage of classes such as \url{javax.net.ssl.SSLContext},
+\url{javax.net.ssl.HostnameVerifier} and
+\url{javax.net.ssl.TrustManager}. Our client now uses a TrustManager
+that trusts everything, which is probably not a very good idea.
 
 \subsection{Strings, URIs, API keys...}
 One thing we felt that we wanted to find a better solution
@@ -751,32 +794,46 @@ locally and on computers at CS, this resulted in quite a
 few bugs only because our request URIs was pointing
 in the wrong directions.
 
-It would been nice if we could find a smart way to
-organize and manage this. There probably exist such a
-solution for this but we haven't found it yet.
+It would been nice if we could find a smart way to organize and manage
+this. There probably exist such a solution for this but because of our
+experience with the \textit{Spring Framework} we did not manage to get
+this done in time.
 
 \subsection{General reflections}\label{sec:reflections}
-It has been a fun but at times difficult project. We thought of
-this as a opportunity to test things and technologies we haven't
-examined before.
+It has been a fun but at times difficult project. We thought of this
+as a opportunity to test things and technologies we haven't examined
+before.
 
-Neither of us have ever used  Spring, JAX-RS or Jersey
-before. And databases in Java were also a new area.
-This resulted in occasional long hours of researching for
-solutions to relatively simple problems.
+Neither of us have ever used Spring, JAX-RS or Jersey before. And
+databases in Java were also a new area. This resulted in occasional
+long hours of researching for solutions to relatively simple problems.
+And solutions that likely could have been implemented in a better
+easier way.
 
-Most of the time Jersey and JAX-RS worked as a charm.
-Spring on the other hand made us wonder more than one time
-why we didn't choose to use PHP instead since we both worked
-with it before. Not because Spring was bad but because it had a
-very steep learning curve and we had to little time to learn
-everything from scratch.
+Most of the time Jersey and JAX-RS worked as a charm. Spring on the
+other hand made us wonder more than one time why we didn't choose to
+use programming language PHP instead since we both worked with it
+before. Not because Spring was bad but because it had a very steep
+learning curve and we had to little time to learn everything from
+scratch.
 
-\subsection{Project plan fulfillment}
+\subsection{Project specification fulfillment}
 % TODO: fix, hibernate MySQL ...
 % Spring 2.5 good guid hence no 3.0
 % TODO: JUnit tests, what are they good for?
+If we compare our original project specification in
+Appendix~\ref{app:ps} with our result described in this report we feel
+that we have succeeded to fulfill all requirements. This comparison
+can be summarized by comparing Figure~\vref{fig:images/sysdes} with
+the similar layer design image from the specification seen in
+Appendix~\ref{app:ps} at page 1.
 
+We stated in the specification that if time existed we would implement
+a persistence layer with
+Hibernate\footnote{https://www.hibernate.org/}, we regrettably did not
+manage to implement this. This feels like it would be the next thing
+to fix for this project since our persistence layer is tightly coupled
+to a local SQLite database file.
 %%%%%%%%%%%%%%%% END APPENDIX AND STUFF %%%%%%%%%%%%%%%%
 % \bibliographystyle{alpha}
 % \bibliography{books.bib}
