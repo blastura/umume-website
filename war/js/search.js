@@ -33,7 +33,7 @@ var aj = {
             $("#search-status").empty();
             $("#search-status").append(document.createTextNode("Searching"));
             $("#search-status").fadeIn(500);
-            
+
             $.ajax({
                 url: "http://mega.cs.umu.se:8080/umume-rest/search/" + searchVal + "?callback=?",
                 success: aj.dataLoaded,
@@ -74,7 +74,13 @@ var aj = {
             var li = $("<li>");
             var a = $("<a>");
             a.attr("href", "/umume/person/" + person.uid);
-            a.append(document.createTextNode(person.givenName + " " + person.familyName + " <" + person.uid + ">"));
+            var type = person.employeeType;
+            if (!type) {
+                type = "Student";
+            }
+            type = type.charAt(0).toUpperCase() + type.slice(1);
+            var displayString = person.givenName + " " + person.familyName + " <" + person.uid + "> " + type;
+            a.append(document.createTextNode(displayString));
             li.append(a);
             ul.append(li);
         });
@@ -84,7 +90,7 @@ var aj = {
     init : function() {
         aj.addTextAreaCallback(document.getElementById("search-field"), aj.ajaxSearch, 500);
         $('#search-field').bind("focus", function(e) {
-        	
+
         	if ($('#search-field').val().length == 12) {
         		$('#search-field').val("");
         	}
