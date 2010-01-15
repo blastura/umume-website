@@ -166,16 +166,16 @@ implementations.
 The web service will hereby be referred to as \textit{Umume-rest}, a
 combination of \textit{Umu} as in Umeå university and \textit{me}
 because it provides a service for students and employees to add
-information about themselves. The client web site is called
-\textit{Umume-website}. All students and employees at Umeå university
-are potential users of our service, they will hereafter be refereed to
-as users.
+information about themselves. The client web site will be referred to
+as \textit{Umume-website}. All students and employees at Umeå
+university are potential users of our service, they will hereafter be
+refereed to as simply users.
 
 These implementations are done with the programming language
 \textit{Java}\footnote{\url{http://java.sun.com/}}, uses the framework
 \textit{Spring
   Framework}\footnote{\url{http://www.springframework.org/}} for the
-web site, and
+web site and
 \textit{Jersey}\footnote{\url{https://jersey.dev.java.net/}} for the
 RESTful Web service.
 
@@ -455,7 +455,9 @@ bean is marshaled and unmarshal by
 JAXB\footnote{\url{https://jaxb.dev.java.net/}} into different
 mediatypes depending on what is requested. Our user resources can be
 fetched as XML or JSON\footnote{\url{http://www.json.org/}} depending
-on which HTTP Accept header is sent by the request.
+on which HTTP Accept header is sent by the request. See example
+responses from \textit{Umume-rest} in
+Appendix~\ref{app:example-request-response}.
 
 \begin{code}
   \begin{footnotesize}
@@ -473,6 +475,7 @@ public class UsersResource {
         //...
         return person;
     }
+}
 \end{verbatim}
   \end{footnotesize}
   \caption{JAX-RS resource}\label{code:jaxrs}
@@ -702,7 +705,7 @@ define what will happen when the pattern is matched. In this case
 \url{/person/{username}} is rewritten to
 \url{person.htm?username={username}}.
 
-\subsection{File-structure}\label{sec:filestructureweb}
+\subsubsection{File-structure}\label{sec:filestructureweb}
 The directory \pathtocode\texttt{/umume-website} contains the
 following sub directories:
 \begin{itemize}
@@ -753,8 +756,6 @@ coupled to a pre-specified URI. A better client would at least keep
 this address in a directory service of some kind to make it easily
 switchable.
 
-\subsection{}
-
 \subsection{Website improvements}
 The supplied website is to be seen as a prototype client of the web
 service. Much can be done to improve the user interface. For example
@@ -774,6 +775,14 @@ everywhere in the project but somehow the information persisted
 doesn't seem to be returned in the same encoding as the rest of the
 information for example from LDAP and Twitter. This was not fixed due
 to lack of time.
+
+\subsection{Points of failure}
+Since our service is tightly coupled and dependent on
+\url{ldap://ldap.umu.se} for every request a failure or URI change
+there would render our service completely useless.
+
+If \url{https://cas.umu.se} were to fail our users would no longer be
+able to update information about themselves.
 
 \subsection{Security}\label{sec:security}
 We ran into some problems creating a secure SSL client that could
@@ -817,6 +826,15 @@ before. Not because Spring was bad but because it had a very steep
 learning curve and we had to little time to learn everything from
 scratch.
 
+We have made a number of test cases for testing our implementation
+with the \textit{JUnit
+  Framework}\footnote{\url{http://www.junit.org/}}. Most of these
+tests are however dependent on an Internet connection and unchanged
+information in LDAP which we cant guarantee. The tests are to be seen
+as a help while developing and are mean to be run manually one at a
+time, not as an automatic indicator of whether the project is bug-free
+or not.
+
 \subsection{Project specification fulfillment}
 % TODO: fix, hibernate MySQL ...
 % Spring 2.5 good guid hence no 3.0
@@ -830,7 +848,7 @@ Appendix~\ref{app:ps} at page 1.
 
 We stated in the specification that if time existed we would implement
 a persistence layer with
-Hibernate\footnote{https://www.hibernate.org/}, we regrettably did not
+Hibernate\footnote{\url{https://www.hibernate.org/}}, we regrettably did not
 manage to implement this. This feels like it would be the next thing
 to fix for this project since our persistence layer is tightly coupled
 to a local SQLite database file.
@@ -899,5 +917,66 @@ to a local SQLite database file.
 \end{verbatim}
   \end{footnotesize}
   \caption{WADL}\label{code:wadl}
+\end{code}
+\newpage
+\subsection{Example request response}\label{app:example-request-response}
+\begin{code}
+  \begin{footnotesize}
+\begin{verbatim}
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<person ref="https://mega.cs.umu.se:8443/umume-rest/users/aonjon04">
+   <buildingName>MIT-huset</buildingName>
+   <description>Hej jag tycker om att spela Quake.</description>
+   <emails>
+      <email>anton.johansson@umdac.umu.se</email>
+      <email>aonjon04@student.umu.se</email>
+   </emails>
+   <familyName>Johansson</familyName>
+   <givenName>Anton</givenName>
+   <latitude>63.820663998355094</latitude>
+   <longitude>20.307776927947998</longitude>
+   <photoURI>http://www.umdac.umu.se/DownloadAsset.action?contentId=67793\
+            &amp;languageId=3&amp;assetKey=johansson_anton_0872_090507_mpn</photoURI>
+   <physicalDeliveryOffice>UMDAC</physicalDeliveryOffice>
+   <postalAddress>Umeå universitet $ SE-901 87 Umeå $ Sverige</postalAddress>
+   <postalCode>901 87</postalCode>
+   <street>Umeå universitet</street>
+   <tweets>
+      <tweet>Hell yeah Conan. #teamconan</tweet>
+      <tweet>@plasticmind Bla bla</tweet>
+   </tweets>
+   <twitterName>anton</twitterName>
+<uid>aonjon04</uid>
+</person>
+\end{verbatim}
+  \end{footnotesize}
+  \caption{XML response}
+\end{code}
+
+\begin{code}
+  \begin{footnotesize}
+\begin{verbatim}
+{"@ref":"https://mega.cs.umu.se:8443/umume-rest/users/aonjon04",
+ "buildingName":"MIT-huset",
+ "description":"Hej jag tycker om att spela Quake.",
+ "emails":{"email":["anton.johansson@umdac.umu.se",
+                    "aonjon04@student.umu.se"]},
+ "familyName":"Johansson",
+ "givenName":"Anton",
+ "latitude":"63.820663998355094",
+ "longitude":"20.307776927947998",
+ "photoURI":"http://www.umdac.umu.se/DownloadAsset.action?contentId=67793\
+             &languageId=3&assetKey=johansson_anton_0872_090507_mpn",
+ "physicalDeliveryOffice":"UMDAC",
+ "postalAddress":"Umeå universitet $ SE-901 87 Umeå $ Sverige",
+ "postalCode":"901 87",
+ "street":"Umeå universitet",
+ "tweets":{"tweet":["Hell yeah Conan. #teamconan",
+                    "@plasticmind Bla bla" ]},
+ "twitterName":"anton",
+ "uid":"aonjon04"}
+\end{verbatim}
+  \end{footnotesize}
+  \caption{JSON response}
 \end{code}
 \end{document}
