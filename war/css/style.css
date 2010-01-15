@@ -79,8 +79,32 @@ li {
  #search-output li {
     line-height:1.5;} 
     
+#profile-pic {
+	float:right;
+	border:solid 1px #ccc;
+	padding:1px;}
 #tweets li {
 	background:url(../images/bullet1.png) no-repeat 0 1px;
 	padding-left:18px;
     font-size:12px;
     margin-bottom:7px;}
+    
+
+label {
+    float:left;
+    width:100px;}
+form li {
+    clear:left;
+    float:left;
+    margin-bottom:5px;}
+form li input,
+form li textarea {
+    width:280px;
+    padding:3px;
+    border:solid 1px #ccc;
+    background-color:#f7f7f7;
+    font-family: helvetica neue, arial, sans-serif;
+    font-size:14px;
+    color:#333;}
+form li textarea {
+	height:100px;}   

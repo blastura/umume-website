@@ -8,31 +8,27 @@
       <form:form method="post" commandName="updatePerson">
          <ul>
             <li>
-               <label>Beskrivning:
-               <form:input path="description" />
-               </label>
+               <label>Beskrivning: </label>
+               <form:textarea path="description" />
             </li>
             <li>
-               <label>Twitternamn: 
+               <label>Twitternamn: </label>
                <form:input path="twitterName" />
-               </label>
             </li>
             <li>
-               <label>Latitude:
+               <label>Latitude:</label>
                <!-- <input type="text" id="inputLat" name="lat" value="" /> -->
                <form:input path="latitude"/>
-               </label>
             </li>
             
             <li>
-               <label>Longitude:
+               <label>Longitude:</label>
                <!-- <input type="text" id="inputLng" name="long" value="" /> -->
                <form:input path="longitude"/>
-               </label>
             </li>
 
-            <li>
-               <input type="submit" value="Uppdatera information" />
+            <li><br />
+               <button type="submit">Uppdatera information</button>
             </li>
          </ul>
       </form:form>

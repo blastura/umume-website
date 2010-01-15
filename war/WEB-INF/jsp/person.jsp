@@ -2,10 +2,10 @@
 
 <div id="content-left">
    <div class="container">
-      <h2><c:out value="${person.givenName} ${person.familyName}"/></h2>
       <c:if test="${not empty person.photoURI}">
-         <img src="<c:out value="${person.photoURI}"/>" />
+         <img src="<c:out value="${person.photoURI}"/>" id="profile-pic" />
       </c:if>
+      <h2><c:out value="${person.givenName} ${person.familyName}"/></h2>
       <p>
          <c:out value="${person.description}"/><br />
          <c:out value="${person.street}"/><br />
