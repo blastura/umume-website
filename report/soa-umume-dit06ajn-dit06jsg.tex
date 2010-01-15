@@ -117,8 +117,6 @@
       \namnTva, \mailTva\\
       % Code-path: \texttt{\pathtocode}\\
       \vspace{10mm}
-      Start-server: \texttt{\pathtocode > ./start-server.sh}\\
-      Start-gui: \texttt{\pathtocode > ./start-gui.sh}
     \end{large}
     \vfill
     \large{\textbf{Supervisors}}\\
@@ -328,12 +326,12 @@ There are two different resources in the service. Both allows GET requests and
 and one of them also allows
 authorised users to add or change information with PUT.
 \begin{itemize}
-    \item GET \verb!/users/\{uid\}! returns information about a user in either
+    \item GET \verb!/users/{uid}! returns information about a user in either
     \textit{application/xml} or \textit{application/json} depending on which the user 
     requested. 
-    \item PUT \verb!/users/\{uid\}?ticket=\{CAS-ticket\}&service=\{service-url\}! updates information about the specified user if the request contains a CAS-ticket and a service-URL that validates. The
+    \item PUT \verb!/users/{uid}?ticket={CAS-ticket}&service={service-url}! updates information about the specified user if the request contains a CAS-ticket and a service-URL that validates. The
     format of the request is \textit{application/xml}. For more information se \ref{code:put-request}
-    \item GET \verb!/search/\{searchString\}! returns a list of users matching the provided 
+    \item GET \verb!/search/{searchString}! returns a list of users matching the provided 
     search string in either
     \textit{application/xml}, \textit{application/json} or \textit{application/javascript}
      depending on which the user requested.
@@ -355,8 +353,7 @@ authorised users to add or change information with PUT.
 
 \subsection{WADL}
 
-See complete WADL in Appendix \ref{app:wadl}.
-
+The methods available for clients of \textit{Umume-rest} is available in a  Web Application Description Language (WADL\footnote{\url{http://www.w3.org/Submission/wadl/}} file \texttt{application.wadl} located at the base of all the resources. See the complete WADL for \textit{Umume-rest} in Appendix \ref{app:wadl}.
 
 \subsection{Web site - umume-website}
 
@@ -424,6 +421,8 @@ the \textit{umume-website}.
   \label{fig:images/sysarch}
 \end{figure*}
 
+The system is consists of different modules, Figure \ref{fig:images/sysarch} gives an overview of the parts.
+
 \subsection{Umume-rest}\label{sec:umume-rest}
 The RESTful web service uses the \textit{JAX-RS API}\footnote{\url{http://jcp.org/en/jsr/detail?id=311}} with the \textit{Jersey}\footnote{https://jersey.dev.java.net/} implementation. This enables resources to be defined within normal java classes by merely adding annotations to specify at which path the resource is available and what HTTP-methods the resource is accessable by. Se an example in Code \ref{code:jaxrs}. This is basically what is used by \textit{Umume-rest} to provide resources describing users. A java bean \textit{PersonBean.java} is used to represent users. This bean is marshaled and unmarshaled by JAXB\footnote{\url{https://jaxb.dev.java.net/}} into different mediatypes depending on what is requested. Our user resources can be fetched as XML or JSON\footnote{\url{http://www.json.org/}} depending on which HTTP Accept header is sent by the request.
 
@@ -451,7 +450,7 @@ public class UsersResource {
 \subsubsection{Update user resource}\label{sec:updateuser}
 To update a user resource a valid CAS user is required. The request is made by a HTTP PUT request with new information about the referenced user, see example implementation in Code \ref{code:updateResource}. This example consumes XML with updated information about the user resource.
 
-To validate whether the request comes from the same user that requests the change a CAS ticket is required as a query string. This supplied ticket from CAS is validated at \url{https://cas.umu.se} using a CAS-client\footnote{\url{http://www.jasig.org/cas}}. If the supplied ticket is valid a username can be extracted, and if this username is the same as the username of the resource to change it can be certain that the request comes from the person who is represented by the resource. Since a ticket is confidential information all this network traffic is tunneled through a secure connection using the HTTPS protocol. See Figure \ref{fig:images/auth} for an overview of the communication.
+To validate whether the request comes from the same user that requests the change a CAS ticket is required as a query string. This supplied ticket from CAS is validated at \url{https://cas.umu.se} using a CAS-client\footnote{\url{http://www.jasig.org/cas}}. If the supplied ticket is valid a username can be extracted, and if this username is the same as the username of the resource to change it can be certain that the request comes from the person who is represented by the resource. Since a ticket is confidential information all this network traffic is tunneled through a secure connection using the HTTPS protocol. See Figure \ref{fig:images/auth} for an overview of this communication.
 
 \begin{code}
   \begin{footnotesize}
@@ -478,9 +477,72 @@ public Response updateUser(
   \label{fig:images/auth}
 \end{figure}
 
+\subsubsection{Deployment: web.xml}
+If \textit{Umume-rest} is compiled and archived into a WAR-file for deployment, the file \texttt{web.xml} need to specify in which package the resources are located, this can be seen in an excerpt from \texttt{web.xml} in Code \ref{code:webxml}. This file also specifies that PUT requests on user resources need to be made with a confidential transporting guarantee.
+
+\begin{code}
+  \begin{footnotesize}
+\begin{verbatim}
+<servlet>
+   <servlet-name>UmumeREST</servlet-name>
+   <servlet-class>
+      com.sun.jersey.spi.container.servlet.ServletContainer
+   </servlet-class>
+   <init-param>
+      <param-name>
+         com.sun.jersey.config.property.packages
+      </param-name>
+      <param-value>
+         se.umu.cs.umume.rest.resources
+      </param-value>
+   </init-param>
+</servlet>
+\end{verbatim}
+  \end{footnotesize}
+  \caption{web.xml jersey resources}\label{code:webxml}
+\end{code}
+
 \subsubsection{Persistance layer}\label{sec:persistance}
 
 \subsection{Umume-website}\label{sec:umume-website}
+
+The website 
+
+\subsubsection{Spring Framework}\label{springframework}
+The web site built with the Spring Framework and uses the MVC 
+design pattern. This means that it consist of views (.jsp), models (Java Beans)
+and controllers (Java classes). These are defined in a servlet called 
+\textit{umume-servlet.xml}.
+
+\subsubsection{Searching}\label{sec:web-search}
+The main feature is the search function that is entirely built 
+in JavaScript. Searching is done as the user type letters. This
+is done with AJAX requests 
+\footnote{\url{http://en.wikipedia.org/wiki/Ajax_\%28programming\%29}}
+to the Umume-rest web service that serveres data in content-type 
+\textit{application/javascript}. 
+
+To make life easier is jQuery \footnote{\url{http://jquery.com/}} used that hels a lot when there is 
+AJAX and event-handling involved. See example at \ref{code:jquery}
+
+\begin{code}
+  \begin{footnotesize}
+\begin{verbatim}
+\$.ajax({
+       url: "http://mega.cs.umu.se:8080/umume-rest/search/" + searchVal + "?callback=?",
+       success: aj.dataLoaded,
+       error: aj.failure,
+       type: "GET",
+       dataType: "json",
+       cache: false,
+       processData: false
+});
+\end{verbatim}
+  \end{footnotesize}
+  \caption{Send request to web service with search string {searchVal}}\label{code:jquery}
+\end{code}            
+
+
 
 Springframework
 Jersey
@@ -598,6 +660,7 @@ works.
 %\bibliography{books.bib}
 
 \newpage
+\onecolumn
 \appendix
 \pagenumbering{roman}
 \section{Appendix}\label{sec:app}
@@ -610,49 +673,49 @@ works.
   \begin{footnotesize}
 \begin{verbatim}
 <application>
-	<doc jersey:generatedBy="Jersey: 1.0.3 04/16/2009 12:07 AM"/>
-	<resources base="http://mega.cs.umu.se:8080/umume-rest/">
-		
-		<resource path="/search/{searchString}">
-			<param type="xs:string" style="template" name="searchString"/>
-			<method name="GET" id="searchForUsers">	
-				<request>
-					<param type="xs:string" style="query" name="callback"/>
-				</request>
-				
-				<response>
-					<representation mediaType="application/javascript"/>
-				</response>
-			</method>
-			<method name="GET" id="searchForUsers">
-		   		<response>
-		   			<representation mediaType="application/xml"/>
-		   			<representation mediaType="application/json"/>
-		   		</response>
-			</method>
-		</resource>
-			
-		<resource path="/users/{uid}">
-			<param type="xs:string" style="template" name="uid"/>
-			<method name="GET" id="getUserXML">
-				<response>
-					<representation mediaType="application/xml"/>
-					<representation mediaType="application/json"/>
-				</response>
-			</method>
-			<method name="PUT" id="updateUser">
-				<request>
-					<param type="xs:string" style="query" name="ticket"/>
-					<param type="xs:string" style="query" name="service"/>
-					<representation mediaType="application/xml"/>
-				</request>
-				<response>
-					<representation mediaType="*/*"/>
-				</response>
-			</method>
-		</resource>
-		
-	</resources>
+   <doc jersey:generatedBy="Jersey: 1.0.3 04/16/2009 12:07 AM"/>
+   <resources base="http://mega.cs.umu.se:8080/umume-rest/">
+
+      <resource path="/search/{searchString}">
+         <param type="xs:string" style="template" name="searchString"/>
+         <method name="GET" id="searchForUsers">
+            <request>
+               <param type="xs:string" style="query" name="callback"/>
+            </request>
+
+            <response>
+               <representation mediaType="application/javascript"/>
+            </response>
+         </method>
+         <method name="GET" id="searchForUsers">
+            <response>
+               <representation mediaType="application/xml"/>
+               <representation mediaType="application/json"/>
+            </response>
+         </method>
+      </resource>
+
+      <resource path="/users/{uid}">
+         <param type="xs:string" style="template" name="uid"/>
+         <method name="GET" id="getUserXML">
+            <response>
+               <representation mediaType="application/xml"/>
+               <representation mediaType="application/json"/>
+            </response>
+         </method>
+         <method name="PUT" id="updateUser">
+            <request>
+               <param type="xs:string" style="query" name="ticket"/>
+               <param type="xs:string" style="query" name="service"/>
+               <representation mediaType="application/xml"/>
+            </request>
+            <response>
+               <representation mediaType="*/*"/>
+            </response>
+         </method>
+      </resource>
+
+   </resources>
 </application>
 \end{verbatim}
   \end{footnotesize}
